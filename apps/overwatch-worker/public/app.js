@@ -51,7 +51,7 @@
 
   async function createLead(e){e.preventDefault();const form=e.currentTarget,raw=Object.fromEntries(new FormData(form).entries());raw.score=Number(raw.score||50);try{await api("/api/leads",{method:"POST",body:JSON.stringify(raw)});$("#leadDialog").close();form.reset();toast("Lead created");await Promise.all([loadLeads(),refreshSnapshot(true)]);}catch(err){toast(err.message);}}
   function bindStatic(){
-    $("#loginForm").addEventListener("submit",submitAuth);$("#logoutBtn").addEventListener("click",logout);$("#refreshBtn").addEventListener("click",()=>refreshSnapshot());
+    $("#logoutBtn").addEventListener("click",logout);$("#refreshBtn").addEventListener("click",()=>refreshSnapshot());
     $$('[data-view]').forEach(b=>b.addEventListener("click",()=>setView(b.dataset.view)));$$('[data-goto]').forEach(b=>b.addEventListener("click",()=>setView(b.dataset.goto)));
     $("#leadSearch").addEventListener("input",debounce(loadLeads,250));$("#stageFilter").addEventListener("change",loadLeads);$("#addLeadBtn").addEventListener("click",()=>$("#leadDialog").showModal());$$('[data-close-dialog]').forEach(b=>b.addEventListener("click",()=>$("#leadDialog").close()));$("#leadForm").addEventListener("submit",createLead);
     $("#csvImportBtn").addEventListener("click",importCsv);$("#rotateKeyBtn").addEventListener("click",rotateKey);$$('[data-copy]').forEach(b=>b.addEventListener("click",async()=>{const text=$(`#${b.dataset.copy}`)?.textContent||"";await navigator.clipboard.writeText(text);toast("Copied");}));
@@ -59,5 +59,5 @@
   }
   function debounce(fn,wait){let t;return(...args)=>{clearTimeout(t);t=setTimeout(()=>fn(...args),wait);};}
   let started=false;async function start(){if(!started){bindStatic();started=true;}await Promise.all([refreshSnapshot(true),loadLeads()]);clearInterval(state.poll);state.poll=setInterval(async()=>{if(document.hidden)return;await refreshSnapshot(true);if(state.view==="calls")loadCalls();if(state.view==="callbacks")loadCallbacks();},8000);}
-  document.addEventListener("DOMContentLoaded",authStatus,{once:true});
+  document.addEventListener("DOMContentLoaded",()=>{$("#loginForm").addEventListener("submit",submitAuth);authStatus();},{once:true});
 })();

@@ -1,0 +1,31 @@
+name = "kenji-data-worker"
+main = "src/index.js"
+compatibility_date = "2026-08-27"
+compatibility_flags = ["nodejs_compat"]
+workers_dev = true
+
+[vars]
+PUBLIC_BASE_URL = "https://kenji-data-worker.cryptocapitalgroupfl.workers.dev"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "kenji-call-center-db"
+database_id = "__KENJI_D1_ID__"
+migrations_dir = "migrations"
+
+[[queues.producers]]
+binding = "CALL_JOBS"
+queue = "kenji-call-jobs"
+
+[[analytics_engine_datasets]]
+binding = "ANALYTICS"
+dataset = "kenji_call_center_events"
+
+[triggers]
+crons = ["*/5 * * * *"]
+
+[observability]
+enabled = true
+
+# Bound at deploy time from Cloudflare default_secrets_store:
+# INTERNAL_CALL_SECRET <- XYZ_DEMO_EILA_RUNTIME_TOKEN

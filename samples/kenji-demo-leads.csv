@@ -1,0 +1,7 @@
+first_name,last_name,phone,email,company,source,source_account,stage,score,tags,notes,contactable,dnc
+Alex,Morgan,+15550101001,alex.morgan@example.com,Morgan Roofing,Kenji / HighLevel,Roofing - Tampa,New,92,roofing|hot,Requested an estimate and asked for a same-day callback,true,false
+Priya,Shah,+15550101002,priya.shah@example.com,Shah Aesthetics,Meta Lead Ad,Med Spa - Orlando,New,86,medspa|consult,Asked about consultation availability,true,false
+Marcus,Lee,+15550101003,marcus.lee@example.com,Lee Solar,Google PPC,Solar - Phoenix,Attempted,78,solar|followup,Downloaded pricing guide and missed first call,true,false
+Dana,Rivera,+15550101004,dana.rivera@example.com,Rivera Realty,Website Form,Real Estate - Miami,Qualified,88,realestate|buyer,Looking to move within 60 days,true,false
+Jordan,Kim,+15550101005,jordan.kim@example.com,Kim Dental,Referral,Dental - Boston,Contacted,71,dental|owner,Interested in missed-call automation and follow-up,true,false
+Taylor,Brooks,+15550101006,taylor.brooks@example.com,Brooks HVAC,Kenji / HighLevel,HVAC - Dallas,Nurture,64,hvac|nurture,Asked to reconnect next week,true,false

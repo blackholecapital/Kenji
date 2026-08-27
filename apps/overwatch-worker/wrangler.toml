@@ -1,0 +1,46 @@
+name = "kenji-overwatch-worker"
+main = "src/index.js"
+compatibility_date = "2026-08-27"
+compatibility_flags = ["nodejs_compat"]
+workers_dev = true
+
+[assets]
+directory = "public"
+binding = "ASSETS"
+run_worker_first = true
+not_found_handling = "single-page-application"
+
+[vars]
+DEMO_BOOTSTRAP_OPEN = "true"
+EILA_RUNTIME_URL = "https://alley-voice.xyz-labs.xyz"
+ISLA_VIDEO_VOICE_ID = "eila"
+ISLA_VIDEO_AVATAR_IMAGE_URL = "https://eila-overwatch-worker.cryptocapitalgroupfl.workers.dev/eila-avatar.png"
+ISLA_VIDEO_AVATAR_PROMPT = "Professional standing AI operator with natural attentive movement, subtle hand gestures, and calm executive presence."
+
+[[d1_databases]]
+binding = "DB"
+database_name = "kenji-call-center-db"
+database_id = "__KENJI_D1_ID__"
+
+[[services]]
+binding = "DATA"
+service = "kenji-data-worker"
+
+[[services]]
+binding = "VIDEO"
+service = "blackhole-video-worker"
+
+[[analytics_engine_datasets]]
+binding = "ANALYTICS"
+dataset = "kenji_overwatch_events"
+
+[observability]
+enabled = true
+
+# Bound at deploy time from Cloudflare default_secrets_store:
+# INTERNAL_CALL_SECRET <- XYZ_DEMO_EILA_RUNTIME_TOKEN
+# EILA_RUNTIME_TOKEN <- XYZ_DEMO_EILA_RUNTIME_TOKEN
+# BLACKHOLE_CAPABILITY_TOKEN <- XYZ_DEMO_EILA_RUNTIME_TOKEN
+#
+# The shared blackhole-video-worker retains its existing LemonSlice provider
+# secret. Kenji never receives or commits that provider credential.

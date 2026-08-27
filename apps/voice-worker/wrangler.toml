@@ -1,0 +1,41 @@
+name = "kenji-voice-worker"
+main = "src/index.js"
+compatibility_date = "2026-08-27"
+compatibility_flags = ["nodejs_compat"]
+workers_dev = true
+
+[vars]
+PUBLIC_BASE_URL = "https://kenji-voice-worker.cryptocapitalgroupfl.workers.dev"
+EILA_RUNTIME_URL = "https://alley-voice.xyz-labs.xyz"
+EILA_VOICE_ID = "eila"
+DEEPGRAM_STT_MODEL = "nova-3"
+DEEPGRAM_ENDPOINTING_MS = "300"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "kenji-call-center-db"
+database_id = "__KENJI_D1_ID__"
+
+[[queues.consumers]]
+queue = "kenji-call-jobs"
+dead_letter_queue = "kenji-call-jobs-dlq"
+max_batch_size = 10
+max_batch_timeout = 2
+max_retries = 3
+
+[[analytics_engine_datasets]]
+binding = "ANALYTICS"
+dataset = "kenji_voice_events"
+
+[observability]
+enabled = true
+
+# Bound at deploy time from Cloudflare default_secrets_store:
+# TWILIO_ACCOUNT_SID <- XYZ_DEMO_TWILIO_ACCOUNT_SID
+# TWILIO_AUTH_TOKEN <- XYZ_DEMO_TWILIO_AUTH_TOKEN
+# DEEPGRAM_API_KEY <- XYZ_DEMO_DEEPGRAM_API_KEY
+# EILA_RUNTIME_TOKEN <- XYZ_DEMO_EILA_RUNTIME_TOKEN
+# INTERNAL_CALL_SECRET <- XYZ_DEMO_EILA_RUNTIME_TOKEN
+#
+# TWILIO_PHONE_NUMBER is optional. When absent, Pass 1 selects the first
+# voice-capable incoming number on the shared Twilio demo account.

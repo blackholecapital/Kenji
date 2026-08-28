@@ -1,6 +1,6 @@
 name = "kenji-overwatch-worker"
-main = "src/index.js"
-compatibility_date = "2026-08-27"
+main = "src/pass2.js"
+compatibility_date = "2026-08-28"
 compatibility_flags = ["nodejs_compat"]
 workers_dev = true
 
@@ -29,6 +29,10 @@ service = "kenji-data-worker"
 [[services]]
 binding = "VIDEO"
 service = "blackhole-video-worker"
+
+[[services]]
+binding = "HIGHLEVEL"
+service = "kenji-highlevel-worker"
 
 [[analytics_engine_datasets]]
 binding = "ANALYTICS"

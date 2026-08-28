@@ -1,0 +1,31 @@
+name = "kenji-highlevel-worker"
+main = "src/index.js"
+compatibility_date = "2026-08-28"
+compatibility_flags = ["nodejs_compat"]
+workers_dev = true
+
+[vars]
+PUBLIC_BASE_URL = "https://kenji-highlevel-worker.cryptocapitalgroupfl.workers.dev"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "kenji-call-center-db"
+database_id = "__KENJI_D1_ID__"
+migrations_dir = "../data-worker/migrations"
+
+[triggers]
+crons = ["*/2 * * * *"]
+
+[[analytics_engine_datasets]]
+binding = "ANALYTICS"
+dataset = "kenji_highlevel_events"
+
+[observability]
+enabled = true
+
+# Bound from default_secrets_store during deploy:
+# INTERNAL_CALL_SECRET <- XYZ_DEMO_EILA_RUNTIME_TOKEN
+#
+# Optional live HighLevel credential, intentionally NOT in the shared demo bundle:
+# HIGHLEVEL_PRIVATE_TOKEN
+# Set it only on this worker when Yousif is ready to connect a real location.

@@ -1,0 +1,33 @@
+name = "kenji-sms-worker"
+main = "src/index.js"
+compatibility_date = "2026-08-29"
+compatibility_flags = ["nodejs_compat"]
+workers_dev = true
+
+[vars]
+PUBLIC_BASE_URL = "https://kenji-sms-worker.cryptocapitalgroupfl.workers.dev"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "kenji-call-center-db"
+database_id = "__KENJI_D1_ID__"
+migrations_dir = "../data-worker/migrations"
+
+[[queues.consumers]]
+queue = "kenji-sms-jobs"
+dead_letter_queue = "kenji-sms-jobs-dlq"
+max_batch_size = 10
+max_batch_timeout = 2
+max_retries = 3
+
+[[analytics_engine_datasets]]
+binding = "ANALYTICS"
+dataset = "kenji_sms_events"
+
+[observability]
+enabled = true
+
+# Bound from default_secrets_store during deploy:
+# TWILIO_ACCOUNT_SID <- XYZ_DEMO_TWILIO_ACCOUNT_SID
+# TWILIO_AUTH_TOKEN <- XYZ_DEMO_TWILIO_AUTH_TOKEN
+# INTERNAL_CALL_SECRET <- XYZ_DEMO_EILA_RUNTIME_TOKEN

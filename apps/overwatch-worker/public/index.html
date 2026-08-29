@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Kenji Command Center</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <div id="authShell" class="auth-shell">
+    <div class="auth-card">
+      <div class="brand-mark">K</div>
+      <p class="eyebrow">KENJI × BLACK HOLE</p>
+      <h1>AI Call Center<br><span>Command Center</span></h1>
+      <p class="auth-copy">Your lead pipeline, AI calling operation and Isla Overwatch in one control plane.</p>
+      <form id="loginForm" class="stack">
+        <input id="authName" placeholder="Your name" autocomplete="name">
+        <input id="authEmail" type="email" placeholder="Email" autocomplete="email" required>
+        <input id="authPass" type="password" placeholder="Passcode" autocomplete="current-password" minlength="6" required>
+        <button class="primary" id="authSubmit" type="submit">Enter Command Center</button>
+      </form>
+      <p id="authHint" class="hint">Checking demo access…</p>
+      <p id="authError" class="error"></p>
+    </div>
+  </div>
+
+  <div id="app" class="app hidden">
+    <aside class="sidebar">
+      <div class="brand"><div class="brand-mark small">K</div><div><strong>KENJI</strong><span>CALL CENTER</span></div></div>
+      <nav id="nav">
+        <button data-view="overview" class="active"><span>⌁</span> Overview</button>
+        <button data-view="leads"><span>◎</span> Lead Pipeline</button>
+        <button data-view="calls"><span>◉</span> Calls</button>
+        <button data-view="callbacks"><span>↻</span> Callbacks</button>
+        <button data-view="integrations"><span>⇄</span> Integrations</button>
+        <button data-view="isla"><span>✦</span> Isla Overwatch</button>
+      </nav>
+      <div class="sidebar-foot">
+        <div class="runtime-pill"><i></i><div><b>AI runtime</b><span id="runtimeStatus">checking…</span></div></div>
+        <button id="logoutBtn" class="ghost compact">Sign out</button>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div><p class="eyebrow">LIVE OPERATIONS</p><h2 id="pageTitle">Command Center</h2></div>
+        <div class="top-actions"><span id="lastRefresh" class="subtle">Not synced</span><button id="refreshBtn" class="ghost">↻ Refresh</button><button id="videoBtn" class="video-btn">● Isla Live</button></div>
+      </header>
+
+      <section id="view-overview" class="view active">
+        <div id="metricGrid" class="metric-grid"></div>
+        <div class="grid two">
+          <article class="panel">
+            <div class="panel-head"><div><p class="eyebrow">PRIORITY QUEUE</p><h3>Hot leads</h3></div><button class="text-btn" data-goto="leads">View all</button></div>
+            <div id="hotLeads" class="lead-stack"></div>
+          </article>
+          <article class="panel">
+            <div class="panel-head"><div><p class="eyebrow">FOLLOW-UP</p><h3>Due callbacks</h3></div><button class="text-btn" data-goto="callbacks">Open queue</button></div>
+            <div id="dueCallbacks" class="list"></div>
+          </article>
+        </div>
+        <div class="grid two">
+          <article class="panel"><div class="panel-head"><div><p class="eyebrow">ACTIVITY</p><h3>Recent calls</h3></div></div><div id="recentCalls" class="list"></div></article>
+          <article class="panel"><div class="panel-head"><div><p class="eyebrow">SOURCE INTELLIGENCE</p><h3>Lead sources</h3></div></div><div id="sources" class="source-bars"></div></article>
+        </div>
+      </section>
+
+      <section id="view-leads" class="view">
+        <div class="toolbar panel slim">
+          <input id="leadSearch" class="search" placeholder="Search name, phone, company, source…">
+          <select id="stageFilter"><option value="">All stages</option><option>New</option><option>Attempted</option><option>Contacted</option><option>Qualified</option><option>Booked</option><option>Won</option><option>Nurture</option><option>Lost</option></select>
+          <button id="addLeadBtn" class="primary small-btn">+ Add lead</button>
+        </div>
+        <div id="leadGrid" class="lead-grid"></div>
+      </section>
+
+      <section id="view-calls" class="view">
+        <article class="panel"><div class="panel-head"><div><p class="eyebrow">VOICE PIPELINE</p><h3>AI call activity</h3></div><span class="badge">Twilio + Deepgram + EILA</span></div><div id="callsTable" class="table-wrap"></div></article>
+      </section>
+
+      <section id="view-callbacks" class="view">
+        <article class="panel"><div class="panel-head"><div><p class="eyebrow">AUTOMATED FOLLOW-UP</p><h3>Callback queue</h3></div><span class="badge">5-minute dispatcher</span></div><div id="callbackList" class="callback-grid"></div></article>
+      </section>
+
+      <section id="view-integrations" class="view">
+        <div class="grid two">
+          <article class="panel">
+            <div class="panel-head"><div><p class="eyebrow">BULK INGEST</p><h3>CSV lead upload</h3></div><span class="badge">up to 5,000</span></div>
+            <p class="copy">Upload exports from HighLevel/Kenji or any lead source. Common headers like name, phone, email, company, source, stage, score and tags are mapped automatically.</p>
+            <label class="dropzone" for="csvFile"><b>Drop or choose a CSV</b><span>Nothing is stored in the browser after import.</span><input id="csvFile" type="file" accept=".csv,text/csv"></label>
+            <div class="row"><input id="csvSource" placeholder="Source label, e.g. Kenji export"><button id="csvImportBtn" class="primary">Import leads</button></div>
+            <p id="csvStatus" class="hint"></p>
+          </article>
+          <article class="panel">
+            <div class="panel-head"><div><p class="eyebrow">LIVE API</p><h3>Push leads into the dialer</h3></div><span class="badge green">Bearer auth</span></div>
+            <p class="copy">Generate a key once, then POST single leads or arrays directly into the same pipeline Isla watches.</p>
+            <label class="field-label">Endpoint</label><div class="copy-field"><code id="apiEndpoint">Loading…</code><button data-copy="apiEndpoint">Copy</button></div>
+            <label class="field-label">Active key</label><div class="copy-field"><code id="apiKeyStatus">No key generated</code><button id="rotateKeyBtn">Generate / rotate</button></div>
+            <div id="apiKeyReveal" class="key-reveal hidden"><b>Save this now. It is shown once.</b><div class="copy-field"><code id="apiKeyValue"></code><button data-copy="apiKeyValue">Copy</button></div></div>
+            <pre class="code-sample" id="curlSample">curl -X POST …</pre>
+          </article>
+        </div>
+        <article class="panel"><div class="panel-head"><div><p class="eyebrow">PIPELINE MAP</p><h3>What plugs in where</h3></div></div><div class="flow"><div><b>Lead sources</b><span>Kenji / GHL · ads · CSV · webhooks</span></div><i>→</i><div><b>Kenji Data Worker</b><span>D1 lead graph + callback queue</span></div><i>→</i><div><b>AI Voice Worker</b><span>Twilio · Deepgram · EILA runtime</span></div><i>→</i><div><b>Isla Overwatch</b><span>live metrics + operator reasoning</span></div></div></article>
+      </section>
+
+      <section id="view-isla" class="view">
+        <div class="isla-layout">
+          <article class="isla-hero panel">
+            <div class="isla-orb">ISLA</div>
+            <p class="eyebrow">OVERWATCH ONLINE</p>
+            <h3>Your call-center operator,<br>not another dashboard.</h3>
+            <p>Isla receives a fresh pipeline snapshot on every question, so she can reason across hot leads, source quality, callback debt and call outcomes.</p>
+            <button id="islaVideoLaunch" class="video-btn large">● Start live video with Isla</button>
+            <div id="islaSnapshot" class="snapshot-strip"></div>
+          </article>
+          <article class="panel chat-panel">
+            <div class="panel-head"><div><p class="eyebrow">ASK THE PIPELINE</p><h3>Isla chat</h3></div><span class="badge green">fresh snapshot / turn</span></div>
+            <div id="islaChat" class="chat-stream"><div class="bubble assistant">I’m connected to the Kenji demo pipeline. Ask what’s hot, what’s stale, where callbacks are backing up, or which source deserves attention.</div></div>
+            <form id="islaForm" class="chat-form"><input id="islaInput" placeholder="Which leads should we call first?" autocomplete="off"><button class="primary" type="submit">Ask Isla</button></form>
+            <div class="prompt-chips"><button>What needs attention right now?</button><button>Which source is converting best?</button><button>Show me the hottest untouched leads.</button></div>
+          </article>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <dialog id="leadDialog">
+    <form id="leadForm" method="dialog" class="dialog-card">
+      <div class="panel-head"><div><p class="eyebrow">NEW PIPELINE RECORD</p><h3>Add lead</h3></div><button type="button" class="icon-btn" data-close-dialog>×</button></div>
+      <div class="form-grid"><input name="firstName" placeholder="First name"><input name="lastName" placeholder="Last name"><input name="phone" placeholder="Phone"><input name="email" type="email" placeholder="Email"><input name="company" placeholder="Company"><input name="source" placeholder="Source"><input name="sourceAccount" placeholder="Source account / location"><input name="score" type="number" min="0" max="100" value="50" placeholder="Score"></div>
+      <textarea name="notes" placeholder="Lead context / notes"></textarea>
+      <div class="dialog-actions"><button type="button" class="ghost" data-close-dialog>Cancel</button><button type="submit" class="primary">Create lead</button></div>
+    </form>
+  </dialog>
+
+  <div id="toast" class="toast"></div>
+  <script src="/app.js"></script>
+  <script src="/isla-live-video.js"></script>
+</body>
+</html>

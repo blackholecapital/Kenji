@@ -1,0 +1,10 @@
+{
+  "name": "kenji-ai-call-center",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "check": "node --check apps/data-worker/src/index.js && node --check apps/voice-worker/src/stt.js && node --check apps/voice-worker/src/index.js && node --check apps/overwatch-worker/src/index.js && node --check apps/overwatch-worker/public/app.js && node --check apps/overwatch-worker/public/isla-live-video.js",
+    "deploy:pass1": "node scripts/deploy-pass1.mjs"
+  }
+}

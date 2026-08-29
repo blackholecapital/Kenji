@@ -14,9 +14,12 @@ migrations_dir = "../data-worker/migrations"
 name = "GOVERNORS"
 class_name = "LaneGovernor"
 
+# New Durable Object namespaces on this Cloudflare account must use
+# SQLite-backed storage. The legacy `new_classes` migration creates a
+# key-value backed namespace and is rejected by the account API.
 [[migrations]]
 tag = "v1"
-new_classes = ["LaneGovernor"]
+new_sqlite_classes = ["LaneGovernor"]
 
 [[queues.consumers]]
 queue = "kenji-orch-voice-ingress"

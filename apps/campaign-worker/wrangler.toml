@@ -1,0 +1,28 @@
+name = "kenji-campaign-worker"
+main = "src/index.js"
+compatibility_date = "2026-08-29"
+compatibility_flags = ["nodejs_compat"]
+workers_dev = false
+
+[[d1_databases]]
+binding = "DB"
+database_name = "kenji-call-center-db"
+database_id = "__KENJI_D1_ID__"
+migrations_dir = "../data-worker/migrations"
+
+[[queues.producers]]
+binding = "CALL_JOBS"
+queue = "kenji-call-jobs"
+
+[triggers]
+crons = ["* * * * *"]
+
+[[analytics_engine_datasets]]
+binding = "ANALYTICS"
+dataset = "kenji_campaign_events"
+
+[observability]
+enabled = true
+
+# Bound from default_secrets_store:
+# INTERNAL_CALL_SECRET <- XYZ_DEMO_EILA_RUNTIME_TOKEN

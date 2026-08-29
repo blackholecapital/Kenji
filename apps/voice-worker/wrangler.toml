@@ -1,5 +1,5 @@
 name = "kenji-voice-worker"
-main = "src/pass3.js"
+main = "src/pass4.js"
 compatibility_date = "2026-08-29"
 compatibility_flags = ["nodejs_compat"]
 workers_dev = true
@@ -33,3 +33,6 @@ enabled = true
 # Bound from default_secrets_store:
 # TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, DEEPGRAM_API_KEY,
 # EILA_RUNTIME_TOKEN and INTERNAL_CALL_SECRET.
+#
+# Pass 4 adds the inbound receptionist at /twilio/inbound. Number routing is
+# never changed automatically; the logged-in owner must explicitly confirm it.

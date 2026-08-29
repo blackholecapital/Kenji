@@ -10,9 +10,11 @@ database_name = "kenji-call-center-db"
 database_id = "__KENJI_D1_ID__"
 migrations_dir = "../data-worker/migrations"
 
+# Pass 7 routes campaign calls through the orchestration ingress instead of
+# directly into the execution queue. The campaign worker itself is unchanged.
 [[queues.producers]]
 binding = "CALL_JOBS"
-queue = "kenji-call-jobs"
+queue = "kenji-orch-voice-ingress"
 
 [triggers]
 crons = ["* * * * *"]

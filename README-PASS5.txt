@@ -1,1 +1,0 @@
-Pass 5 campaign orchestration checkpoint. See docs/PASS5.md.

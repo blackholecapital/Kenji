@@ -1,10 +1,11 @@
 {
   "name": "kenji-ai-call-center",
   "private": true,
-  "version": "0.1.0",
+  "version": "0.2.0",
   "type": "module",
   "scripts": {
-    "check": "node --check apps/data-worker/src/index.js && node --check apps/voice-worker/src/stt.js && node --check apps/voice-worker/src/index.js && node --check apps/overwatch-worker/src/index.js && node --check apps/overwatch-worker/public/app.js && node --check apps/overwatch-worker/public/isla-live-video.js",
-    "deploy:pass1": "node scripts/deploy-pass1.mjs"
+    "check": "node --check apps/data-worker/src/index.js && node --check apps/voice-worker/src/stt.js && node --check apps/voice-worker/src/index.js && node --check apps/highlevel-worker/src/index.js && node --check apps/overwatch-worker/src/index.js && node --check apps/overwatch-worker/src/pass2.js && node --check apps/overwatch-worker/public/app.js && node --check apps/overwatch-worker/public/pass2-highlevel.js && node --check apps/overwatch-worker/public/isla-live-video.js",
+    "deploy:pass1": "node scripts/deploy-pass1.mjs",
+    "deploy:pass2": "node scripts/deploy-pass2.mjs"
   }
 }

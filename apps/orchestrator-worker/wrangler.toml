@@ -1,0 +1,65 @@
+name = "kenji-orchestrator-worker"
+main = "src/index.js"
+compatibility_date = "2026-08-29"
+compatibility_flags = ["nodejs_compat"]
+workers_dev = false
+
+[[d1_databases]]
+binding = "DB"
+database_name = "kenji-call-center-db"
+database_id = "__KENJI_D1_ID__"
+migrations_dir = "../data-worker/migrations"
+
+[[durable_objects.bindings]]
+name = "GOVERNORS"
+class_name = "LaneGovernor"
+
+# New Durable Object namespaces on this Cloudflare account must use
+# SQLite-backed storage. The legacy `new_classes` migration creates a
+# key-value backed namespace and is rejected by the account API.
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["LaneGovernor"]
+
+[[queues.consumers]]
+queue = "kenji-orch-voice-ingress"
+dead_letter_queue = "kenji-orch-voice-ingress-dlq"
+max_batch_size = 25
+max_batch_timeout = 1
+max_retries = 20
+
+[[queues.consumers]]
+queue = "kenji-orch-sms-ingress"
+dead_letter_queue = "kenji-orch-sms-ingress-dlq"
+max_batch_size = 50
+max_batch_timeout = 1
+max_retries = 20
+
+[[queues.consumers]]
+queue = "kenji-orch-email-ingress"
+dead_letter_queue = "kenji-orch-email-ingress-dlq"
+max_batch_size = 100
+max_batch_timeout = 1
+max_retries = 20
+
+[[queues.producers]]
+binding = "VOICE_OUT"
+queue = "kenji-call-jobs"
+
+[[queues.producers]]
+binding = "SMS_OUT"
+queue = "kenji-sms-jobs"
+
+[[queues.producers]]
+binding = "EMAIL_OUT"
+queue = "kenji-email-jobs"
+
+[[analytics_engine_datasets]]
+binding = "ANALYTICS"
+dataset = "kenji_orchestration_events"
+
+[observability]
+enabled = true
+
+# Bound from default_secrets_store:
+# INTERNAL_CALL_SECRET <- XYZ_DEMO_EILA_RUNTIME_TOKEN

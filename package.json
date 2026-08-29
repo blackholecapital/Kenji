@@ -1,15 +1,16 @@
 {
   "name": "kenji-ai-call-center",
   "private": true,
-  "version": "0.6.0",
+  "version": "0.7.0",
   "type": "module",
   "scripts": {
-    "check": "node --check apps/data-worker/src/index.js && node --check apps/voice-worker/src/stt.js && node --check apps/voice-worker/src/index.js && node --check apps/voice-worker/src/pass3.js && node --check apps/voice-worker/src/pass4.js && node --check apps/highlevel-worker/src/index.js && node --check apps/highlevel-worker/src/pass3.js && node --check apps/campaign-worker/src/index.js && node --check apps/sms-worker/src/index.js && node --check apps/email-worker/src/index.js && node --check apps/nurture-worker/src/index.js && node --check apps/overwatch-worker/src/index.js && node --check apps/overwatch-worker/src/pass2.js && node --check apps/overwatch-worker/src/pass3.js && node --check apps/overwatch-worker/src/pass4.js && node --check apps/overwatch-worker/src/pass5.js && node --check apps/overwatch-worker/src/pass6.js && node --check apps/overwatch-worker/public/app.js && node --check apps/overwatch-worker/public/pass2-highlevel.js && node --check apps/overwatch-worker/public/pass3-ops.js && node --check apps/overwatch-worker/public/pass4-demo.js && node --check apps/overwatch-worker/public/pass5-campaigns.js && node --check apps/overwatch-worker/public/pass6-nurture.js && node --check apps/overwatch-worker/public/isla-live-video.js",
+    "check": "node --check apps/data-worker/src/index.js && node --check apps/voice-worker/src/stt.js && node --check apps/voice-worker/src/index.js && node --check apps/voice-worker/src/pass3.js && node --check apps/voice-worker/src/pass4.js && node --check apps/highlevel-worker/src/index.js && node --check apps/highlevel-worker/src/pass3.js && node --check apps/campaign-worker/src/index.js && node --check apps/sms-worker/src/index.js && node --check apps/email-worker/src/index.js && node --check apps/nurture-worker/src/index.js && node --check apps/orchestrator-worker/src/index.js && node --check apps/overwatch-worker/src/index.js && node --check apps/overwatch-worker/src/pass2.js && node --check apps/overwatch-worker/src/pass3.js && node --check apps/overwatch-worker/src/pass4.js && node --check apps/overwatch-worker/src/pass5.js && node --check apps/overwatch-worker/src/pass6.js && node --check apps/overwatch-worker/src/pass7.js && node --check apps/overwatch-worker/public/app.js && node --check apps/overwatch-worker/public/pass2-highlevel.js && node --check apps/overwatch-worker/public/pass3-ops.js && node --check apps/overwatch-worker/public/pass4-demo.js && node --check apps/overwatch-worker/public/pass5-campaigns.js && node --check apps/overwatch-worker/public/pass6-nurture.js && node --check apps/overwatch-worker/public/pass7-scale.js && node --check apps/overwatch-worker/public/isla-live-video.js",
     "deploy:pass1": "node scripts/deploy-pass1.mjs",
     "deploy:pass2": "node scripts/deploy-pass2.mjs",
     "deploy:pass3": "node scripts/deploy-pass3.mjs",
     "deploy:pass4": "node scripts/deploy-pass4.mjs",
     "deploy:pass5": "node scripts/deploy-pass5.mjs",
-    "deploy:pass6": "node scripts/deploy-pass6.mjs"
+    "deploy:pass6": "node scripts/deploy-pass6.mjs",
+    "deploy:pass7": "node scripts/deploy-pass7.mjs"
   }
 }

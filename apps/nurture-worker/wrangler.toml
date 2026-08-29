@@ -10,13 +10,15 @@ database_name = "kenji-call-center-db"
 database_id = "__KENJI_D1_ID__"
 migrations_dir = "../data-worker/migrations"
 
+# Pass 7 inserts a governed ingress layer between nurture and the channel
+# execution workers. The nurture worker still produces the same job bodies.
 [[queues.producers]]
 binding = "SMS_JOBS"
-queue = "kenji-sms-jobs"
+queue = "kenji-orch-sms-ingress"
 
 [[queues.producers]]
 binding = "EMAIL_JOBS"
-queue = "kenji-email-jobs"
+queue = "kenji-orch-email-ingress"
 
 [triggers]
 crons = ["* * * * *"]

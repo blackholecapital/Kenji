@@ -1,0 +1,32 @@
+name = "kenji-nurture-worker"
+main = "src/index.js"
+compatibility_date = "2026-08-29"
+compatibility_flags = ["nodejs_compat"]
+workers_dev = true
+
+[[d1_databases]]
+binding = "DB"
+database_name = "kenji-call-center-db"
+database_id = "__KENJI_D1_ID__"
+migrations_dir = "../data-worker/migrations"
+
+[[queues.producers]]
+binding = "SMS_JOBS"
+queue = "kenji-sms-jobs"
+
+[[queues.producers]]
+binding = "EMAIL_JOBS"
+queue = "kenji-email-jobs"
+
+[triggers]
+crons = ["* * * * *"]
+
+[[analytics_engine_datasets]]
+binding = "ANALYTICS"
+dataset = "kenji_nurture_events"
+
+[observability]
+enabled = true
+
+# Bound from default_secrets_store during deploy:
+# INTERNAL_CALL_SECRET <- XYZ_DEMO_EILA_RUNTIME_TOKEN

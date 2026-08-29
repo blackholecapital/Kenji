@@ -1,5 +1,5 @@
 name = "kenji-overwatch-worker"
-main = "src/pass5.js"
+main = "src/pass6.js"
 compatibility_date = "2026-08-29"
 compatibility_flags = ["nodejs_compat"]
 workers_dev = true
@@ -41,6 +41,18 @@ service = "kenji-voice-worker"
 [[services]]
 binding = "CAMPAIGNS"
 service = "kenji-campaign-worker"
+
+[[services]]
+binding = "NURTURE"
+service = "kenji-nurture-worker"
+
+[[services]]
+binding = "SMS"
+service = "kenji-sms-worker"
+
+[[services]]
+binding = "EMAIL"
+service = "kenji-email-worker"
 
 [[analytics_engine_datasets]]
 binding = "ANALYTICS"

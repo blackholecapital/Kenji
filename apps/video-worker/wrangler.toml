@@ -1,0 +1,38 @@
+name = "kenji-video-worker"
+main = "src/index.js"
+compatibility_date = "2026-08-29"
+compatibility_flags = ["nodejs_compat"]
+workers_dev = false
+
+[vars]
+ISLA_VIDEO_VOICE_ID = "eila"
+ISLA_VIDEO_AVATAR_IMAGE_URL = "https://eila-overwatch-worker.cryptocapitalgroupfl.workers.dev/eila-avatar.png"
+ISLA_VIDEO_AVATAR_PROMPT = "Professional standing AI operator with natural attentive movement, subtle hand gestures, and calm executive presence."
+
+[[d1_databases]]
+binding = "DB"
+database_name = "kenji-call-center-db"
+database_id = "__KENJI_D1_ID__"
+migrations_dir = "../data-worker/migrations"
+
+[[services]]
+binding = "VIDEO"
+service = "blackhole-video-worker"
+
+[[queues.consumers]]
+queue = "kenji-video-jobs"
+dead_letter_queue = "kenji-video-jobs-dlq"
+max_batch_size = 10
+max_batch_timeout = 1
+max_retries = 5
+
+[[analytics_engine_datasets]]
+binding = "ANALYTICS"
+dataset = "kenji_video_events"
+
+[observability]
+enabled = true
+
+# Bound from default_secrets_store during deploy:
+# INTERNAL_CALL_SECRET <- XYZ_DEMO_EILA_RUNTIME_TOKEN
+# BLACKHOLE_CAPABILITY_TOKEN <- XYZ_DEMO_EILA_RUNTIME_TOKEN

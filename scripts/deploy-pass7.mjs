@@ -15,8 +15,17 @@ function run(cmd,args,{cwd=ROOT,capture=false,allowFail=false}={}){const r=spawn
 function npx(args,opts){return run(process.platform==="win32"?"npx.cmd":"npx",["wrangler",...args],opts);}
 function parseJsonOutput(text){const raw=String(text||"").trim();for(const [o,c] of [["[","]"],["{","}"]]){const s=raw.indexOf(o),e=raw.lastIndexOf(c);if(s>=0&&e>s){try{return JSON.parse(raw.slice(s,e+1));}catch{}}}throw new Error(`Could not parse Wrangler JSON output: ${raw.slice(0,500)}`);}
 function findD1(){const data=parseJsonOutput(npx(["d1","list","--json"],{capture:true}));const rows=Array.isArray(data)?data:data.result||[];const row=rows.find(x=>x.name===DB_NAME);const id=row?.uuid||row?.id||row?.database_id;if(!id)throw new Error(`${DB_NAME} was not found. Deploy earlier passes first.`);return id;}
-function listQueues(){try{const data=parseJsonOutput(npx(["queues","list","--json"],{capture:true}));return Array.isArray(data)?data:data.result||[];}catch{return [];}}
-function ensureQueues(){let current=listQueues();for(const name of QUEUES){if(current.some(x=>(x.queue_name||x.name)===name))continue;console.log(`Creating Queue ${name}…`);npx(["queues","create",name]);current=listQueues();}}
+function ensureQueue(name){
+  const cmd=process.platform==="win32"?"npx.cmd":"npx";
+  console.log(`Ensuring Queue ${name}…`);
+  const r=spawnSync(cmd,["wrangler","queues","create",name],{cwd:ROOT,encoding:"utf8",stdio:["ignore","pipe","pipe"],shell:false});
+  if(r.error)throw r.error;
+  const output=`${r.stdout||""}\n${r.stderr||""}`;
+  if(r.status===0){console.log(`Queue ${name} created.`);return;}
+  if(/already taken|code:\s*11009|\[code:\s*11009\]/i.test(output)){console.log(`Queue ${name} already exists; continuing.`);return;}
+  throw new Error(`wrangler queues create ${name} failed with exit ${r.status}\n${output.slice(0,4000)}`);
+}
+function ensureQueues(){for(const name of QUEUES)ensureQueue(name);}
 function generatedConfig(path,d1Id){const source=readFileSync(path,"utf8"),generated=path.replace(/wrangler\.toml$/,"wrangler.generated.toml");writeFileSync(generated,source.replaceAll("__KENJI_D1_ID__",d1Id));return generated;}
 function deployWithStore(config,bindings){const helper=resolve(PLATFORM,"scripts/deploy-with-secrets-store.mjs");if(!existsSync(helper))throw new Error(`Cloudflare platform helper not found at ${helper}. Set CLOUDFLARE_PLATFORM_DIR if needed.`);const args=[helper,"--config",config,"--store",STORE];for(const [workerBinding,storeSecret] of Object.entries(bindings))args.push("--bind",`${workerBinding}=${storeSecret}`);run(process.execPath,args,{cwd:PLATFORM});}
 

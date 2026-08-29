@@ -1,6 +1,6 @@
 name = "kenji-overwatch-worker"
-main = "src/pass2.js"
-compatibility_date = "2026-08-28"
+main = "src/pass3.js"
+compatibility_date = "2026-08-29"
 compatibility_flags = ["nodejs_compat"]
 workers_dev = true
 
@@ -41,10 +41,5 @@ dataset = "kenji_overwatch_events"
 [observability]
 enabled = true
 
-# Bound at deploy time from Cloudflare default_secrets_store:
-# INTERNAL_CALL_SECRET <- XYZ_DEMO_EILA_RUNTIME_TOKEN
-# EILA_RUNTIME_TOKEN <- XYZ_DEMO_EILA_RUNTIME_TOKEN
-# BLACKHOLE_CAPABILITY_TOKEN <- XYZ_DEMO_EILA_RUNTIME_TOKEN
-#
-# The shared blackhole-video-worker retains its existing LemonSlice provider
-# secret. Kenji never receives or commits that provider credential.
+# Bound from default_secrets_store:
+# INTERNAL_CALL_SECRET, EILA_RUNTIME_TOKEN and BLACKHOLE_CAPABILITY_TOKEN.

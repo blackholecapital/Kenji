@@ -1,6 +1,6 @@
 name = "kenji-voice-worker"
-main = "src/index.js"
-compatibility_date = "2026-08-27"
+main = "src/pass3.js"
+compatibility_date = "2026-08-29"
 compatibility_flags = ["nodejs_compat"]
 workers_dev = true
 
@@ -30,12 +30,6 @@ dataset = "kenji_voice_events"
 [observability]
 enabled = true
 
-# Bound at deploy time from Cloudflare default_secrets_store:
-# TWILIO_ACCOUNT_SID <- XYZ_DEMO_TWILIO_ACCOUNT_SID
-# TWILIO_AUTH_TOKEN <- XYZ_DEMO_TWILIO_AUTH_TOKEN
-# DEEPGRAM_API_KEY <- XYZ_DEMO_DEEPGRAM_API_KEY
-# EILA_RUNTIME_TOKEN <- XYZ_DEMO_EILA_RUNTIME_TOKEN
-# INTERNAL_CALL_SECRET <- XYZ_DEMO_EILA_RUNTIME_TOKEN
-#
-# TWILIO_PHONE_NUMBER is optional. When absent, Pass 1 selects the first
-# voice-capable incoming number on the shared Twilio demo account.
+# Bound from default_secrets_store:
+# TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, DEEPGRAM_API_KEY,
+# EILA_RUNTIME_TOKEN and INTERNAL_CALL_SECRET.

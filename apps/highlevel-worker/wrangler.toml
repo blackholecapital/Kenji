@@ -1,6 +1,6 @@
 name = "kenji-highlevel-worker"
-main = "src/index.js"
-compatibility_date = "2026-08-28"
+main = "src/pass3.js"
+compatibility_date = "2026-08-29"
 compatibility_flags = ["nodejs_compat"]
 workers_dev = true
 
@@ -25,7 +25,5 @@ enabled = true
 
 # Bound from default_secrets_store during deploy:
 # INTERNAL_CALL_SECRET <- XYZ_DEMO_EILA_RUNTIME_TOKEN
-#
-# Optional live HighLevel credential, intentionally NOT in the shared demo bundle:
-# HIGHLEVEL_PRIVATE_TOKEN
-# Set it only on this worker when Yousif is ready to connect a real location.
+# Optional live HighLevel credential: HIGHLEVEL_PRIVATE_TOKEN
+# Calendar booking also requires calendar-event write scope for the location.

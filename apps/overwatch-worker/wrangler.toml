@@ -1,5 +1,5 @@
 name = "kenji-overwatch-worker"
-main = "src/pass7.js"
+main = "src/pass8.js"
 compatibility_date = "2026-08-29"
 compatibility_flags = ["nodejs_compat"]
 workers_dev = true
@@ -22,6 +22,10 @@ binding = "DB"
 database_name = "kenji-call-center-db"
 database_id = "__KENJI_D1_ID__"
 
+[[queues.producers]]
+binding = "VIDEO_INGRESS"
+queue = "kenji-orch-video-ingress"
+
 [[services]]
 binding = "DATA"
 service = "kenji-data-worker"
@@ -29,6 +33,10 @@ service = "kenji-data-worker"
 [[services]]
 binding = "VIDEO"
 service = "blackhole-video-worker"
+
+[[services]]
+binding = "VIDEO_QUEUE"
+service = "kenji-video-worker"
 
 [[services]]
 binding = "HIGHLEVEL"

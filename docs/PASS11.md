@@ -1,63 +1,68 @@
-# Kenji Pass 11 — Premium UI + EILA Support
+# Kenji Pass 11 — Premium branded UI + EILA help center
 
 ## Purpose
+Pass 11 is a frontend usability and brand-polish pass. It does **not** add a new runtime, provider, queue, secret, or data model.
 
-Pass 11 is a presentation and usability pass. It does not add another provider, communication runtime, queue, or cross-repository dependency.
+The visual direction follows the current KenjiAI positioning at `kenjiai.com`: revenue-generating automation, 24/7 operation, lead follow-up, AI voice, CRM, SMS/email, and business automation.
 
-The goal is to make the existing Kenji system feel like a customer-ready KenjiAI product instead of an engineering dashboard.
+## What changes
 
-## Changes
+- white / light premium theme
+- Kenji blue + aqua accent system
+- cleaner left navigation and top bar
+- Kenji AI brand lockup and revenue-automation positioning
+- global lead/company search in the top bar
+- stage shortcuts above Lead Pipeline
+- rebuilt lead-card visual hierarchy
+- round priority score badge
+- cleaner stage/source/last-contact rows
+- premium bottom action deck on every lead card:
+  - phone
+  - SMS
+  - email
+  - callback/calendar
+- 24-hour EILA support pill in the bottom-right
+- detailed operating FAQ for every major surface
+- support tabs for Dashboard, Automation, Integrations, and EILA Live
 
-- Light premium visual system aligned to KenjiAI's public positioning.
-- Kenji AI brand header with the public tagline: **AI That Closes Deals While You Sleep**.
-- Navigation grouped into Core, Growth, AI & Operations, and System sections.
-- Cleaner white cards, softer borders/shadows, blue/teal accents, and green success states.
-- Lead Pipeline stage tabs for faster filtering.
-- Premium lead cards with circular lead score, simplified metadata rows, and bottom action icons.
-- Lead action bar includes phone, text, email, callback/calendar, and stage controls.
-- Text/email action icons route the owner to Nurture rather than pretending an unconfirmed send occurred.
-- Compact overview lead actions use icon buttons.
-- Persistent bottom-right **24-hour support** pill.
-- Detailed EILA support drawer with searchable FAQ coverage for:
-  - Getting started
-  - Dashboard
-  - Lead Pipeline
-  - Calls and Callbacks
-  - Campaigns
-  - Integrations / HighLevel
-  - Agency Ops
-  - EILA Overwatch / EILA Live
-  - Nurture
-  - Scale Lab
-  - Launch
-  - Owner Setup
-  - Troubleshooting
-- Demo View remains read-only. Live actions still require owner login.
-- All visible Isla naming is normalized to **EILA**.
+## Support-center scope
+The help center explains:
 
-## Safety / behavior
+- Overview
+- Lead Pipeline
+- Calls
+- Callbacks
+- Campaigns
+- Integrations / CSV / API intake
+- HighLevel / Kenji CRM mapping
+- Agency Ops
+- Nurture / consent
+- Scale Lab / circuit breakers
+- Launch acceptance
+- Owner Setup
+- EILA Overwatch
+- EILA Live
+- demo/read-only mode
+- five-minute buyer walkthrough
+- owner go-live sequence
 
-Pass 11 does not bypass authentication. The Demo View can be browsed, but live communication and mutation controls remain protected by the existing demo-access layer.
-
-The new SMS/email icons do not claim to send messages. They route the owner into the existing Nurture workflow, which keeps consent and provider-confirmation boundaries intact.
+## Security / demo boundary
+The public demo remains read-only. Pass 11 does not relax authentication. Live actions continue to require the owner login through the existing demo-access gate.
 
 ## Deployment boundary
-
-Kenji remains sovereign. Pass 11 uses only `Kenji/scripts/deploy-with-secrets-store.mjs` and existing Cloudflare account resources. No other repository participates in deployment.
-
-## Deploy
+This pass is deployed entirely from the Kenji repository.
 
 ```bash
-cd ~/Kenji
-
-git fetch origin \
-  refs/heads/build/pass11-premium-ui-faq:refs/remotes/origin/build/pass11-premium-ui-faq
-
-git checkout -B build/pass11-premium-ui-faq \
-  origin/build/pass11-premium-ui-faq
-
 npm run check
 npm run deploy:pass11
 ```
 
-After deploy, hard refresh the Command Center.
+Do **not** call or depend on another repository during deployment. Kenji uses its local `scripts/deploy-with-secrets-store.mjs` helper.
+
+## Files
+
+- `apps/overwatch-worker/src/pass11.js`
+- `apps/overwatch-worker/public/pass11-premium.css`
+- `apps/overwatch-worker/public/pass11-premium.js`
+- `apps/overwatch-worker/public/pass11-support.js`
+- `scripts/deploy-pass11.mjs`

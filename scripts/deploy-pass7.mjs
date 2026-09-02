@@ -3,7 +3,6 @@ import { resolve } from "node:path";
 import { spawnSync } from "node:child_process";
 
 const ROOT=resolve(new URL("..",import.meta.url).pathname);
-const PLATFORM=process.env.CLOUDFLARE_PLATFORM_DIR||"/mnt/eila-hot-sidecar/workspace/cloudflare-platform";
 const STORE="default_secrets_store";
 const DB_NAME="kenji-call-center-db";
 const QUEUES=[
@@ -27,7 +26,7 @@ function ensureQueue(name){
 }
 function ensureQueues(){for(const name of QUEUES)ensureQueue(name);}
 function generatedConfig(path,d1Id){const source=readFileSync(path,"utf8"),generated=path.replace(/wrangler\.toml$/,"wrangler.generated.toml");writeFileSync(generated,source.replaceAll("__KENJI_D1_ID__",d1Id));return generated;}
-function deployWithStore(config,bindings){const helper=resolve(PLATFORM,"scripts/deploy-with-secrets-store.mjs");if(!existsSync(helper))throw new Error(`Cloudflare platform helper not found at ${helper}. Set CLOUDFLARE_PLATFORM_DIR if needed.`);const args=[helper,"--config",config,"--store",STORE];for(const [workerBinding,storeSecret] of Object.entries(bindings))args.push("--bind",`${workerBinding}=${storeSecret}`);run(process.execPath,args,{cwd:PLATFORM});}
+function deployWithStore(config,bindings){const helper=resolve(ROOT,"scripts/deploy-with-secrets-store.mjs");if(!existsSync(helper))throw new Error(`Kenji deploy helper not found at ${helper}.`);const args=[helper,"--config",config,"--store",STORE];for(const [workerBinding,storeSecret] of Object.entries(bindings))args.push("--bind",`${workerBinding}=${storeSecret}`);run(process.execPath,args,{cwd:ROOT});}
 
 const generated=[];
 try{

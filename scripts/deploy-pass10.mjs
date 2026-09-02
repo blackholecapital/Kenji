@@ -14,15 +14,16 @@ function deployWithStore(config,bindings){const helper=resolve(ROOT,"scripts/dep
 
 const generated=[];
 try{
-  console.log("Kenji Pass 9: handoff profile → launch checklist → safe demo seed → acceptance report");
+  console.log("Kenji Pass 10: owner setup wizard → real connection mapping → guided demo polish");
   const d1Id=findD1();console.log(`Using D1 ${DB_NAME} (${d1Id})`);
   const dataConfig=generatedConfig(resolve(ROOT,"apps/data-worker/wrangler.toml"),d1Id);
   const overwatchConfig=generatedConfig(resolve(ROOT,"apps/overwatch-worker/wrangler.toml"),d1Id);
   generated.push(dataConfig,overwatchConfig);
-  console.log("Applying Pass 9 D1 migration…");npx(["d1","migrations","apply",DB_NAME,"--remote","--config",dataConfig]);
-  console.log("Deploying Kenji Overwatch Pass 9…");deployWithStore(overwatchConfig,{INTERNAL_CALL_SECRET:"XYZ_DEMO_EILA_RUNTIME_TOKEN",EILA_RUNTIME_TOKEN:"XYZ_DEMO_EILA_RUNTIME_TOKEN",BLACKHOLE_CAPABILITY_TOKEN:"XYZ_DEMO_EILA_RUNTIME_TOKEN"});
-  console.log("\nPass 9 deployed.");
+  console.log("Applying Pass 10 D1 migration…");npx(["d1","migrations","apply",DB_NAME,"--remote","--config",dataConfig]);
+  console.log("Deploying Kenji Overwatch Pass 10…");deployWithStore(overwatchConfig,{INTERNAL_CALL_SECRET:"XYZ_DEMO_EILA_RUNTIME_TOKEN",EILA_RUNTIME_TOKEN:"XYZ_DEMO_EILA_RUNTIME_TOKEN",BLACKHOLE_CAPABILITY_TOKEN:"XYZ_DEMO_EILA_RUNTIME_TOKEN"});
+  console.log("\nPass 10 deployed.");
   console.log("Command Center: https://kenji-overwatch-worker.cryptocapitalgroupfl.workers.dev");
-  console.log("New surface: Launch");
-  console.log("Safe demo seeding is explicit and outbound-blocked. Acceptance reports send no provider traffic.");
+  console.log("New surface: Owner Setup");
+  console.log("Wizard actions reuse the existing voice/SMS/email/HighLevel APIs. Provider secrets are never accepted by the browser.");
+  console.log("Launch remains the source-of-truth acceptance gate; Owner Setup is the guided path to make it green.");
 } finally {for(const file of generated){try{unlinkSync(file);}catch{}}}

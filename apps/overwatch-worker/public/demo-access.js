@@ -29,20 +29,32 @@
     try{const r=await fetch("/api/auth/status",{headers:{accept:"application/json"}}),d=await r.json();sessionAuthenticated=Boolean(d.sessionAuthenticated);document.body.classList.toggle("demo-readonly",!sessionAuthenticated);const btn=$("#demoLoginBtn"),pill=$("#demoModePill"),logout=$("#logoutBtn");if(btn)btn.innerHTML=sessionAuthenticated?`<span>●</span> ${String(d.user?.name||"Owner").split(/\s+/).map(x=>x[0]).join("").slice(0,2).toUpperCase()||"OWNER"}`:`<span>⌾</span> Login`;if(pill){pill.textContent=sessionAuthenticated?"OWNER MODE":"DEMO VIEW · READ ONLY";pill.classList.toggle("live",sessionAuthenticated);}if(logout)logout.style.display=sessionAuthenticated?"":"none";if(!sessionAuthenticated)closeLogin();return d;}catch{return null;}
   }
   function controls(){
-    const actions=$(".top-actions");if(actions&&!$("#demoLoginBtn")){const pill=document.createElement("span");pill.id="demoModePill";pill.textContent="DEMO VIEW · READ ONLY";const btn=document.createElement("button");btn.id="demoLoginBtn";btn.className="ghost compact";btn.innerHTML="<span>⌾</span> Login";btn.addEventListener("click",()=>sessionAuthenticated?openLogin():openLogin());actions.prepend(btn);actions.prepend(pill);}
+    const actions=$(".top-actions");if(actions&&!$("#demoLoginBtn")){const pill=document.createElement("span");pill.id="demoModePill";pill.textContent="DEMO VIEW · READ ONLY";const btn=document.createElement("button");btn.id="demoLoginBtn";btn.className="ghost compact";btn.innerHTML="<span>⌾</span> Login";btn.addEventListener("click",openLogin);actions.prepend(btn);actions.prepend(pill);}
     const card=$("#authShell .auth-card");if(card&&!$("#demoAuthClose")){const close=document.createElement("button");close.id="demoAuthClose";close.type="button";close.textContent="×";close.setAttribute("aria-label","Close login");close.addEventListener("click",closeLogin);card.prepend(close);}
     $("#authShell")?.addEventListener("click",e=>{if(e.target.id==="authShell")closeLogin();});
   }
+  function safeDemoButton(button){
+    return Boolean(
+      button.closest("#authShell")||
+      button.closest("#kenjiSupportPanel")||
+      button.closest("#p11StageChips")||
+      button.id==="kenjiSupportPill"||
+      button.id==="demoLoginBtn"||
+      button.id==="demoAuthClose"||
+      button.id==="refreshBtn"||
+      button.matches("[data-view],[data-goto],[data-copy],.text-btn")
+    );
+  }
   function lockLiveActions(){
     document.addEventListener("click",e=>{
-      if(sessionAuthenticated)return;const button=e.target.closest("button");if(!button)return;if(button.closest("#authShell")||button.id==="demoLoginBtn"||button.id==="demoAuthClose"||button.id==="refreshBtn"||button.matches("[data-view],[data-goto],[data-copy],.text-btn"))return;
+      if(sessionAuthenticated)return;const button=e.target.closest("button");if(!button||safeDemoButton(button))return;
       e.preventDefault();e.stopImmediatePropagation();openLogin();
     },true);
     document.addEventListener("change",e=>{if(sessionAuthenticated)return;if(e.target.matches("[data-stage]")){e.preventDefault();e.stopImmediatePropagation();openLogin();}},true);
   }
   function boot(){
     style();controls();$("#authShell")?.classList.add("hidden");$("#app")?.classList.remove("hidden");replaceText();
-    const observer=new MutationObserver(records=>{for(const rec of records){for(const node of rec.addedNodes){if(node.nodeType===Node.TEXT_NODE){node.nodeValue=node.nodeValue.replace(/\bISLA\b/g,"EILA").replace(/\bIsla\b/g,"EILA");}else if(node.nodeType===Node.ELEMENT_NODE)replaceText(node);}}});observer.observe(document.body,{childList:true,subtree:true});
+    const observer=new MutationObserver(records=>{for(const rec of records){for(const node of rec.addedNodes){if(node.nodeType===Node.TEXT_NODE){const next=node.nodeValue?.replace(/\bISLA\b/g,"EILA").replace(/\bIsla\b/g,"EILA");if(next&&next!==node.nodeValue)node.nodeValue=next;}else if(node.nodeType===Node.ELEMENT_NODE)replaceText(node);}}});observer.observe(document.body,{childList:true,subtree:true});
     lockLiveActions();status();
     $("#loginForm")?.addEventListener("submit",()=>{setTimeout(status,700);setTimeout(status,1800);});
     $("#logoutBtn")?.addEventListener("click",()=>setTimeout(status,400));

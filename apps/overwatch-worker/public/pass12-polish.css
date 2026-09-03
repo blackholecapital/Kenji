@@ -1,0 +1,22 @@
+/* Pass 12: stage mapping + demo cleanup + Kenji brand lockup */
+[data-stage-tone="new"]{--stage:#2563eb;--stage-bg:#eff6ff;--stage-ink:#1d4ed8}
+[data-stage-tone="attempted"]{--stage:#64748b;--stage-bg:#f1f5f9;--stage-ink:#475569}
+[data-stage-tone="contacted"]{--stage:#0891b2;--stage-bg:#ecfeff;--stage-ink:#0e7490}
+[data-stage-tone="qualified"]{--stage:#16a34a;--stage-bg:#f0fdf4;--stage-ink:#15803d}
+[data-stage-tone="nurture"]{--stage:#f59e0b;--stage-bg:#fffbeb;--stage-ink:#b45309}
+[data-stage-tone="booked"]{--stage:#7c3aed;--stage-bg:#f5f3ff;--stage-ink:#6d28d9}
+[data-stage-tone="won"]{--stage:#059669;--stage-bg:#ecfdf5;--stage-ink:#047857}
+[data-stage-tone="lost"]{--stage:#e11d48;--stage-bg:#fff1f2;--stage-ink:#be123c}
+.lead-card[data-stage-tone]{border-top:5px solid var(--stage)!important;background:linear-gradient(180deg,var(--stage-bg) 0,rgba(255,255,255,.98) 92px,#fff 100%)!important}
+.lead-card[data-stage-tone] .avatar{border-color:color-mix(in srgb,var(--stage) 28%,white)!important;color:var(--stage-ink)!important;background:var(--stage-bg)!important}
+.lead-card[data-stage-tone] .score-ring{border-color:var(--stage)!important;color:var(--stage-ink)!important;background:var(--stage-bg)!important}
+.lead-card[data-stage-tone] select[data-stage]{border-color:color-mix(in srgb,var(--stage) 45%,white)!important;color:var(--stage-ink)!important;background:var(--stage-bg)!important;font-weight:750!important}
+#p11StageChips button[data-stage-tone],.p11-stage-tab[data-stage-tone]{background:var(--stage-bg)!important;border:1px solid color-mix(in srgb,var(--stage) 42%,white)!important;color:var(--stage-ink)!important;box-shadow:inset 0 -2px 0 color-mix(in srgb,var(--stage) 35%,transparent)!important}
+#p11StageChips button[data-stage-tone].primary,.p11-stage-tab[data-stage-tone].active{background:var(--stage)!important;color:#fff!important;border-color:var(--stage)!important}
+.p12-demo-delete{margin-left:2px!important;color:#b4233d!important;border-color:#f2c8d1!important;background:#fff7f8!important}.p12-demo-delete:hover{background:#fff0f2!important;border-color:#e9a9b7!important;color:#9f1239!important}.p12-demo-delete svg{pointer-events:none}
+#p12ResetDemo{margin-left:auto!important;color:#6b7280!important;white-space:nowrap}
+.p12-kenji-brand{display:flex;align-items:center;gap:9px;min-width:178px;padding:7px 11px;border:1px solid #d9e5f2;border-radius:12px;background:linear-gradient(145deg,#fff,#f5fbff);box-shadow:0 6px 18px rgba(15,23,42,.045);text-decoration:none;color:#132238;white-space:nowrap}.p12-kenji-brand:hover{border-color:#bcd4ee;box-shadow:0 9px 24px rgba(15,23,42,.075)}.p12-kenji-brand>span:last-child{display:block;line-height:1.05}.p12-kenji-brand b{display:block;font-size:10px;letter-spacing:.08em}.p12-kenji-brand small{display:block;font-size:7px;color:#7b8798;margin-top:4px;letter-spacing:.015em}.p12-brand-icon{width:31px;height:31px;border-radius:9px;overflow:hidden;display:grid;place-items:center;flex:none;background:linear-gradient(145deg,#0f6df5,#4fc8ce);color:#fff;font-weight:900}.p12-brand-icon img{width:100%;height:100%;object-fit:cover}
+#kenjiSupportPanel.p12-fixed-support{height:min(570px,56vh)!important;max-height:none!important;min-height:430px!important;display:none!important}#kenjiSupportPanel.p12-fixed-support.open{display:flex!important}.p12-fixed-support .kenji-support-head,.p12-fixed-support .kenji-support-tabs{flex:none}.p12-fixed-support .kenji-support-body{flex:1!important;min-height:0!important;overflow:auto!important;overscroll-behavior:contain}.p12-fixed-support .kenji-faq .answer{max-height:220px;overflow:auto}
+.p12-eila-headshot{width:40px;height:40px;border-radius:50%;overflow:hidden;display:inline-block;flex:none;background:linear-gradient(145deg,#e8f4ff,#eefcf8);border:2px solid rgba(255,255,255,.78)}.p12-eila-headshot.large{width:52px;height:52px;border-radius:14px;border:1px solid #d9e7f4}.p12-eila-headshot img{width:100%!important;height:100%!important;object-fit:cover!important;object-position:50% 15%!important;transform:scale(2.05);transform-origin:50% 18%;display:block}.p12-eila-headshot.large img{transform:scale(1.9);transform-origin:50% 16%}
+@media(max-width:1220px){.p12-kenji-brand{display:none}}
+@media(max-width:760px){#kenjiSupportPanel.p12-fixed-support{height:58vh!important;min-height:390px!important}.p12-demo-delete{margin-left:0!important}}

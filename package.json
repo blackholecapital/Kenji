@@ -1,7 +1,7 @@
 {
   "name": "kenji-ai-call-center",
   "private": true,
-  "version": "0.13.0",
+  "version": "0.14.0",
   "type": "module",
   "scripts": {
     "check": "node scripts/check-all.mjs",
@@ -17,6 +17,7 @@
     "deploy:pass10": "node scripts/deploy-pass10.mjs",
     "deploy:pass11": "node scripts/deploy-pass11.mjs",
     "deploy:pass12": "node scripts/deploy-pass12.mjs",
-    "deploy:pass13": "node scripts/deploy-pass13.mjs"
+    "deploy:pass13": "node scripts/deploy-pass13.mjs",
+    "deploy:pass14": "node scripts/deploy-pass14.mjs"
   }
 }

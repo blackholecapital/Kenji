@@ -43,8 +43,8 @@ function cleanup(env,ctx){
 
 export default {
   async fetch(request,env,ctx){
-    const url=new URL(request.url),method=request.method.toUpperCase(),apiPath=url.pathname.startsWith("/api/");
-    cleanup(env,ctx);
+    const url=new URL(request.url),method=request.method.toUpperCase(),apiPath=url.pathname.startsWith("/api/"),authPath=url.pathname.startsWith("/api/auth/");
+    if(authPath)cleanup(env,ctx);
 
     if(apiPath&&!['GET','HEAD','OPTIONS'].includes(method)&&!safeOrigin(request,url))return json({ok:false,error:"Cross-origin mutation request rejected"},403);
 
@@ -56,7 +56,7 @@ export default {
       return new Response(response.body,{status:response.status,headers:hardenedHeaders(response.headers,{api:true})});
     }
 
-    let response=await app.fetch(request,env,ctx);
+    const response=await app.fetch(request,env,ctx);
     const type=response.headers.get("content-type")||"";
     if(method==="GET"&&type.includes("text/html")){
       let html=await response.text();

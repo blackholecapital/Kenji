@@ -1,0 +1,70 @@
+/* Pass 17: repo-owned EILA portrait + Kenji AI Call Center lockup */
+.sidebar .brand{
+  align-items:center!important;
+  gap:11px!important;
+}
+.sidebar .brand .p17-brand-portrait{
+  width:46px!important;
+  height:46px!important;
+  min-width:46px!important;
+  padding:0!important;
+  overflow:hidden!important;
+  border-radius:14px!important;
+  border:1px solid #c9d9e8!important;
+  background:#eaf7fb!important;
+  box-shadow:0 8px 22px rgba(15,23,42,.12)!important;
+}
+.sidebar .brand .p17-brand-portrait img{
+  display:block;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:center 32%;
+}
+.sidebar .brand strong{
+  display:block!important;
+  font-size:16px!important;
+  line-height:1.05!important;
+  letter-spacing:.035em!important;
+  color:#111827!important;
+}
+.sidebar .brand>div:last-child>span{
+  display:block!important;
+  margin-top:4px!important;
+  font-size:9px!important;
+  line-height:1!important;
+  font-weight:700!important;
+  letter-spacing:.12em!important;
+  color:#7b8ba1!important;
+}
+
+#kenjiSupportPill img,
+#kenjiSupportPanel .kenji-support-head img{
+  object-fit:cover!important;
+  object-position:center 30%!important;
+}
+#kenjiSupportPill img{
+  border:1px solid rgba(255,255,255,.72)!important;
+  box-shadow:0 2px 9px rgba(15,23,42,.18)!important;
+}
+
+.isla-orb.p17-eila-portrait{
+  padding:0!important;
+  overflow:hidden!important;
+  border-radius:18px!important;
+  background:#edf9fc!important;
+  border:1px solid #cfe3eb!important;
+  box-shadow:0 10px 26px rgba(15,23,42,.10)!important;
+}
+.isla-orb.p17-eila-portrait img{
+  display:block;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:center 28%;
+}
+
+@media(max-width:760px){
+  .sidebar .brand .p17-brand-portrait{width:40px!important;height:40px!important;min-width:40px!important}
+  .sidebar .brand strong{font-size:14px!important}
+}

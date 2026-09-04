@@ -12,25 +12,44 @@
   };
 
   function toast(msg){const el=$('#toast');if(!el)return;el.textContent=msg;el.classList.add('show');clearTimeout(el._p15);el._p15=setTimeout(()=>el.classList.remove('show'),2800);}
-  async function api(path,options={}){const r=await fetch(path,{...options,headers:{accept:'application/json',...(options.body?{'content-type':'application/json'}:{}),...(options.headers||{})}}),d=await r.json().catch(()=>({}));if(!r.ok||d?.ok===false)throw new Error(d?.error||`Request failed (${r.status})`);return d;}
+  async function api(path,options={}){
+    const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),10000);
+    try{
+      const r=await fetch(path,{...options,signal:options.signal||controller.signal,headers:{accept:'application/json',...(options.body?{'content-type':'application/json'}:{}),...(options.headers||{})}}),d=await r.json().catch(()=>({}));
+      if(!r.ok||d?.ok===false)throw new Error(d?.error||`Request failed (${r.status})`);
+      return d;
+    }catch(e){if(e?.name==='AbortError')throw new Error('Request timed out. Refresh and try again.');throw e;}finally{clearTimeout(timer);}
+  }
   function goto(view){const b=$(`[data-view="${CSS.escape(view)}"]`);if(b)b.click();}
   async function scheduleCallback(leadId){const dt=new Date(Date.now()+3600000);dt.setSeconds(0,0);const value=prompt('Callback time (local date/time)',dt.toISOString().slice(0,16));if(!value)return;const due=Date.parse(value);if(Number.isNaN(due))return toast('Invalid callback time');const reason=prompt('Callback note','Follow up')||'Follow up';try{await api(`/api/leads/${encodeURIComponent(leadId)}/callback`,{method:'POST',body:JSON.stringify({dueAt:due,reason})});toast('Callback queued');}catch(e){toast(e.message);}}
   async function queueCall(leadId){try{const d=await api(`/api/leads/${encodeURIComponent(leadId)}/call`,{method:'POST',body:'{}'});toast(`Call queued · ${(d.call?.id||'').slice(-8)}`);}catch(e){toast(e.message);}}
 
   /* Overview */
+  let hotQueued=false;
   function overviewPanels(){
     const hot=$('#hotLeads')?.closest('.panel'),sources=$('#sources')?.closest('.panel'),follow=$('#dueCallbacks')?.closest('.panel'),recent=$('#recentCalls')?.closest('.panel');
     hot?.classList.add('p15-hot-panel');sources?.classList.add('p15-source-panel');follow?.classList.add('p15-follow-panel');recent?.classList.add('p15-recent-panel');
   }
   function hotLeadHeat(){
+    hotQueued=false;
     for(const row of $$('#hotLeads .mini-lead')){
-      const score=Number($('.score',row)?.textContent||0);row.classList.toggle('p15-hot',score>80&&score<90);row.classList.toggle('p15-elite',score>=90);
-      let fire=$('.p15-fire',row);if(score>80){if(!fire){fire=document.createElement('span');fire.className='p15-fire';$('.grow b',row)?.appendChild(fire);}fire.textContent=score>=90?' 🔥🔥':' 🔥';}else fire?.remove();
+      const score=Number($('.score',row)?.textContent||0),isHot=score>80&&score<90,isElite=score>=90;
+      if(row.classList.contains('p15-hot')!==isHot)row.classList.toggle('p15-hot',isHot);
+      if(row.classList.contains('p15-elite')!==isElite)row.classList.toggle('p15-elite',isElite);
+      let fire=$('.p15-fire',row);
+      if(score>80){
+        const wanted=score>=90?' 🔥🔥':' 🔥';
+        if(!fire){fire=document.createElement('span');fire.className='p15-fire';$('.grow b',row)?.appendChild(fire);}
+        if(fire.textContent!==wanted)fire.textContent=wanted;
+      }else if(fire)fire.remove();
     }
   }
+  function scheduleHot(){if(hotQueued)return;hotQueued=true;requestAnimationFrame(hotLeadHeat);}
 
   /* Callback premium deck */
+  let callbackQueued=false;
   function callbackActions(){
+    callbackQueued=false;
     for(const card of $$('#callbackList .callback-card')){
       let tags=$('.p15-callback-tags',card);if(!tags){tags=document.createElement('div');tags.className='p15-callback-tags';card.appendChild(tags);}
       const stage=$('.p13-callback-stage',card),status=$('.row>.status',card);if(stage&&!stage.closest('.p15-callback-tags'))tags.prepend(stage);if(status&&!status.closest('.p15-callback-tags'))tags.appendChild(status);
@@ -47,9 +66,10 @@
       card.appendChild(deck);
     }
   }
+  function scheduleCallbacks(){if(callbackQueued)return;callbackQueued=true;requestAnimationFrame(callbackActions);}
 
   /* Calls */
-  let callRows=[],leadMap=new Map(),selectedCallId='',callsBusy=false;
+  let callRows=[],leadMap=new Map(),selectedCallId='',callsBusy=false,callsQueued=false;
   const demoTranscript={
     demo_call_1:[['EILA','Hi Noah, this is EILA with Kenji AI. I am following up on your interest in multi-location support. Do you have a minute?'],['Customer','Yes. We are looking at something that can handle multiple locations without adding more staff.'],['EILA','That fits what you submitted. I can have the team send booking options and pricing for a multi-location setup.'],['Customer','Perfect. Send me the booking link and I will grab a time.']],
     demo_call_2:[['EILA','Hi Jordan, I am following up on your solar inquiry. Is now still a good time?'],['Customer','I am tied up right now. Can you call me back after four?'],['EILA','Absolutely. I will mark the follow-up for after 4 PM.'],['Customer','Thank you.']],
@@ -76,21 +96,29 @@
   }
   function selectCall(id){selectedCallId=id;$$('[data-p15-call]').forEach(x=>x.classList.toggle('active',x.dataset.p15Call===id));const c=callRows.find(x=>String(x.id)===String(id));if(c)renderCallDetail(c,'conversation');}
   function bindCallWorkspace(){
-    $$('[data-p15-call]').forEach(card=>{card.addEventListener('click',e=>{if(e.target.closest('button'))return;selectCall(card.dataset.p15Call);});card.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();selectCall(card.dataset.p15Call);}});});
-    $$('[data-p15-call-action]').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();const leadId=b.dataset.lead,op=b.dataset.p15CallAction;if(op==='phone')queueCall(leadId);else if(op==='calendar')scheduleCallback(leadId);else{goto('nurture');toast(op==='sms'?'Open Nurture to text this lead.':'Open Nurture to email this lead.');}}));
+    $$('[data-p15-call]').forEach(card=>{if(card.dataset.p15Bound)return;card.dataset.p15Bound='1';card.addEventListener('click',e=>{if(e.target.closest('button'))return;selectCall(card.dataset.p15Call);});card.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();selectCall(card.dataset.p15Call);}});});
+    $$('[data-p15-call-action]').forEach(b=>{if(b.dataset.p15Bound)return;b.dataset.p15Bound='1';b.addEventListener('click',e=>{e.stopPropagation();const leadId=b.dataset.lead,op=b.dataset.p15CallAction;if(op==='phone')queueCall(leadId);else if(op==='calendar')scheduleCallback(leadId);else{goto('nurture');toast(op==='sms'?'Open Nurture to text this lead.':'Open Nurture to email this lead.');}});});
   }
   async function premiumCalls(){
-    const host=$('#callsTable');if(!host||host.querySelector('.p15-calls-layout')||callsBusy)return;callsBusy=true;
-    try{const [c,l]=await Promise.all([api('/api/calls'),api('/api/leads?limit=250')]);callRows=c.calls||[];leadMap=new Map((l.leads||[]).map(x=>[String(x.id),x]));if(!callRows.length){host.innerHTML='<p class="copy">No calls yet.</p>';return;}if(!selectedCallId||!callRows.some(x=>x.id===selectedCallId))selectedCallId=callRows[0].id;host.innerHTML=`<div class="p15-calls-layout"><div class="p15-call-list">${callRows.map(callTicket).join('')}</div><aside id="p15CallDetail" class="p15-call-detail"></aside></div>`;bindCallWorkspace();selectCall(selectedCallId);}catch(e){toast(e.message);}finally{callsBusy=false;}
+    callsQueued=false;const host=$('#callsTable');if(!host||host.querySelector('.p15-calls-layout')||callsBusy)return;callsBusy=true;host.dataset.p15Loading='1';
+    try{
+      const [c,l]=await Promise.all([api('/api/calls'),api('/api/leads?limit=250')]);
+      callRows=c.calls||[];leadMap=new Map((l.leads||[]).map(x=>[String(x.id),x]));
+      if(!callRows.length){host.innerHTML='<p class="copy">No calls yet.</p>';return;}
+      if(!selectedCallId||!callRows.some(x=>x.id===selectedCallId))selectedCallId=callRows[0].id;
+      host.innerHTML=`<div class="p15-calls-layout"><div class="p15-call-list">${callRows.map(callTicket).join('')}</div><aside id="p15CallDetail" class="p15-call-detail"></aside></div>`;
+      bindCallWorkspace();selectCall(selectedCallId);
+    }catch(e){host.innerHTML=`<div class="p15-load-error"><b>Call activity could not load.</b><span>${esc(e.message)}</span><button class="ghost small-btn text-btn" type="button" id="p15RetryCalls">Retry</button></div>`;$('#p15RetryCalls')?.addEventListener('click',()=>{host.innerHTML='';scheduleCalls();});toast(e.message);}finally{delete host.dataset.p15Loading;callsBusy=false;}
   }
+  function scheduleCalls(){if(callsQueued)return;callsQueued=true;requestAnimationFrame(()=>{const host=$('#callsTable');if(host&&!host.querySelector('.p15-calls-layout'))premiumCalls();else callsQueued=false;});}
 
   function boot(){
-    overviewPanels();hotLeadHeat();callbackActions();
-    const hot=$('#hotLeads');if(hot)new MutationObserver(()=>hotLeadHeat()).observe(hot,{childList:true,subtree:true});
-    const callbacks=$('#callbackList');if(callbacks)new MutationObserver(()=>callbackActions()).observe(callbacks,{childList:true,subtree:true});
-    const calls=$('#callsTable');if(calls)new MutationObserver(()=>{if(!calls.querySelector('.p15-calls-layout'))premiumCalls();}).observe(calls,{childList:true,subtree:true});
-    document.addEventListener('click',e=>{const v=e.target.closest('[data-view]')?.dataset.view;if(v==='overview')setTimeout(()=>{overviewPanels();hotLeadHeat();},40);if(v==='callbacks')setTimeout(callbackActions,40);if(v==='calls')setTimeout(premiumCalls,80);});
-    if($('#view-calls')?.classList.contains('active'))premiumCalls();
+    overviewPanels();scheduleHot();scheduleCallbacks();
+    const hot=$('#hotLeads');if(hot)new MutationObserver(scheduleHot).observe(hot,{childList:true,subtree:true});
+    const callbacks=$('#callbackList');if(callbacks)new MutationObserver(scheduleCallbacks).observe(callbacks,{childList:true,subtree:true});
+    const calls=$('#callsTable');if(calls)new MutationObserver(()=>{if(!calls.querySelector('.p15-calls-layout')&&!calls.dataset.p15Loading)scheduleCalls();}).observe(calls,{childList:true,subtree:true});
+    document.addEventListener('click',e=>{const v=e.target.closest('[data-view]')?.dataset.view;if(v==='overview')setTimeout(()=>{overviewPanels();scheduleHot();},40);if(v==='callbacks')setTimeout(scheduleCallbacks,40);if(v==='calls')setTimeout(scheduleCalls,80);});
+    if($('#view-calls')?.classList.contains('active'))scheduleCalls();
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
 })();

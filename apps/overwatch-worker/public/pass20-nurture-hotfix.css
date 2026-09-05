@@ -1,0 +1,56 @@
+/* Pass 20 hotfix: keep Nurture inside its own view and finish the fixed workspace geometry. */
+
+/* Critical containment: Pass 20 must not override the app's inactive-view hiding. */
+#view-nurture.p20-nurture-layout{display:none!important}
+#view-nurture.p20-nurture-layout.active{display:block!important}
+
+/* Desktop Nurture geometry: two equal-height control rows + one full-height customer rail. */
+#view-nurture.active .p20-nurture-workspace{
+  align-items:stretch!important;
+}
+#view-nurture.active .p20-nurture-controls{
+  align-items:stretch!important;
+}
+#view-nurture.active .p20-nurture-controls>.panel{
+  height:100%!important;
+  align-self:stretch!important;
+}
+
+/* Consent Desk should visually match Channel Control in the top row. */
+#view-nurture.active .p20-nurture-controls>.panel:nth-child(1),
+#view-nurture.active .p20-nurture-controls>.panel:nth-child(2){
+  min-height:255px!important;
+}
+
+/* Sequence Builder and Nurture Sequences share one clean bottom edge. */
+#view-nurture.active .p20-nurture-controls>.panel:nth-child(3),
+#view-nurture.active .p20-nurture-controls>.panel:nth-child(4){
+  min-height:100%!important;
+}
+
+/* Customer rail spans the full controls height instead of ending at its content. */
+#view-nurture.active .p20-nurture-rail{
+  position:relative!important;
+  top:auto!important;
+  max-height:none!important;
+  height:auto!important;
+  overflow:visible!important;
+  align-self:stretch!important;
+  display:flex!important;
+  min-height:100%!important;
+}
+#view-nurture.active .p20-nurture-rail .p19-nurture-desk{
+  flex:1 1 auto!important;
+  min-height:100%!important;
+  width:100%!important;
+}
+#view-nurture.active .p20-nurture-rail #p19NurtureCustomers{
+  align-content:start!important;
+}
+
+@media(max-width:1080px){
+  #view-nurture.active .p20-nurture-controls>.panel:nth-child(1),
+  #view-nurture.active .p20-nurture-controls>.panel:nth-child(2){min-height:0!important}
+  #view-nurture.active .p20-nurture-rail{display:block!important;min-height:0!important}
+  #view-nurture.active .p20-nurture-rail .p19-nurture-desk{min-height:0!important}
+}

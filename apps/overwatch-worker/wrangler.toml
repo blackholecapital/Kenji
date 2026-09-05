@@ -1,5 +1,5 @@
 name = "kenji-overwatch-worker"
-main = "src/pass18.js"
+main = "src/pass19.js"
 compatibility_date = "2026-08-29"
 compatibility_flags = ["nodejs_compat"]
 workers_dev = true

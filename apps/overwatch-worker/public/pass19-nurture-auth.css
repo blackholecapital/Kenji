@@ -1,0 +1,42 @@
+/* Pass 19: nurture customer desk + auth branding + callback normalization */
+
+/* Sidebar: Kenji logo, then one clean product descriptor. */
+.sidebar .brand.p19-sidebar-brand{display:flex!important;flex-direction:column!important;align-items:flex-start!important;gap:5px!important;padding:0 5px 24px!important}
+.sidebar .brand.p19-sidebar-brand .p19-kenji-logo{width:104px!important;height:42px!important;min-width:104px!important;padding:0!important;border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;overflow:visible!important}
+.sidebar .brand.p19-sidebar-brand .p19-kenji-logo img{display:block!important;width:100%!important;height:100%!important;object-fit:contain!important;object-position:left center!important}
+.sidebar .brand.p19-sidebar-brand>div:last-child{display:block!important}
+.sidebar .brand.p19-sidebar-brand strong{display:none!important}
+.sidebar .brand.p19-sidebar-brand>div:last-child>span{display:block!important;margin:0!important;font-size:9px!important;line-height:1!important;font-weight:850!important;letter-spacing:.15em!important;color:#66758a!important}
+
+/* Login: customer brand on top, Black Hole / EILA identity down low. */
+.auth-shell .auth-card.p19-auth-card{width:min(420px,calc(100vw - 32px))!important;padding:28px 30px 24px!important;border-radius:20px!important}
+.p19-auth-card .p19-auth-logo{width:150px!important;height:62px!important;margin:0 auto 7px!important;padding:0!important;background:transparent!important;border:0!important;box-shadow:none!important;border-radius:0!important;display:block!important}
+.p19-auth-card .p19-auth-logo img{display:block;width:100%;height:100%;object-fit:contain;object-position:center}
+.p19-auth-hide{display:none!important}
+.p19-auth-label{text-align:center;font-size:9px;font-weight:850;letter-spacing:.16em;color:#66758a;margin:0 0 22px;text-transform:uppercase}
+.p19-auth-card .stack{gap:9px!important}.p19-auth-card .stack input{height:47px!important;border-radius:11px!important;padding:0 14px!important;font-size:14px!important}.p19-auth-card .stack button{height:47px!important;border-radius:11px!important;margin-top:2px!important}
+#authName{display:block!important}
+#authError{min-height:18px;margin:7px 0 0!important;text-align:center}
+.p19-auth-footer{display:flex;justify-content:center;align-items:center;gap:9px;margin-top:16px;padding-top:15px;border-top:1px solid #e7edf4;color:#718096}
+.p19-auth-footer img{width:34px;height:34px;border-radius:50%;object-fit:cover;object-position:center 28%;border:1px solid #cfdbe8;box-shadow:0 4px 12px rgba(15,23,42,.08)}
+.p19-auth-footer span{display:block;font-size:8px;text-transform:uppercase;letter-spacing:.12em}.p19-auth-footer b{display:block;font-size:11px;color:#26354b;letter-spacing:.04em;margin-top:2px}
+
+/* Nurture becomes a customer-facing working desk, not just configuration. */
+.p19-nurture-desk{margin:0 0 12px!important;padding:12px!important}.p19-nurture-desk .panel-head{margin-bottom:5px!important}.p19-nurture-explain{max-width:900px!important;margin-bottom:9px!important;font-size:9px!important;line-height:1.45!important}
+.p19-nurture-customers{display:grid;grid-template-columns:repeat(3,minmax(240px,1fr));gap:8px}
+.p19-nurture-card{border:1px solid #f3c56d;border-top:4px solid #f59e0b;border-radius:11px;background:linear-gradient(180deg,#fffbeb 0,#fff 60px);padding:9px;box-shadow:0 4px 14px rgba(15,23,42,.035);min-width:0}
+.p19-nurture-top{display:flex;align-items:center;gap:7px}.p19-nurture-avatar{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:#fffbeb;border:1px solid #f6d696;color:#b45309;font-size:8px;font-weight:900;flex:none}.p19-nurture-person{min-width:0;flex:1}.p19-nurture-person b{display:block;font-size:10px;color:#111827;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.p19-nurture-person>span{display:block;font-size:7.5px;color:#7a8798;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.p19-heat{display:inline-flex;font-size:9px;letter-spacing:-2px;margin-left:3px;vertical-align:1px}.p19-nurture-score{width:29px;height:29px;border-radius:50%;display:grid;place-items:center;border:1.5px solid #f59e0b;background:#fffaf0;color:#b45309;font-size:8px;font-weight:900;flex:none}
+.p19-nurture-meta{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px;margin:7px 0}.p19-nurture-meta div{padding:5px;border:1px solid #eceff3;border-radius:7px;background:rgba(255,255,255,.85);min-width:0}.p19-nurture-meta label{display:block;font-size:6px;text-transform:uppercase;letter-spacing:.05em;color:#8a96a7;margin-bottom:2px}.p19-nurture-meta span{display:block;font-size:7.5px;color:#2c3a4f;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.p19-nurture-note{font-size:7.8px!important;line-height:1.35!important;color:#66758a!important;margin:0!important;min-height:21px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}.p19-nurture-actions{display:flex;gap:5px;flex-wrap:wrap;margin-top:7px;padding-top:7px;border-top:1px solid #edf1f5}.p19-nurture-actions button{height:28px!important;padding:0 8px!important;border-radius:7px!important;font-size:7.5px!important;font-weight:800!important;border:1px solid #dce4ee!important;background:#fff!important;color:#315b8e!important}.p19-nurture-actions button:hover{border-color:#f2c56e!important;background:#fffaf0!important;color:#b45309!important}.p19-nurture-empty{border:1px dashed #dbe3ed;border-radius:10px;padding:11px;background:#fafcff;grid-column:1/-1}.p19-nurture-empty b,.p19-nurture-empty span{display:block}.p19-nurture-empty b{font-size:10px;color:#243247}.p19-nurture-empty span{font-size:8px;color:#718096;margin-top:3px}.p19-consent-focus{outline:2px solid rgba(245,158,11,.45)!important;background:#fffbeb!important;border-radius:8px!important}
+
+/* Callback normalization: same hierarchy as call/lead tickets. */
+#view-callbacks .callback-card[data-p19-callback="1"]{padding:9px!important;padding-right:9px!important;min-height:0!important}
+#view-callbacks .callback-card[data-p19-callback="1"]>.time{display:none!important}
+#view-callbacks .callback-card[data-p19-callback="1"]>.p15-callback-tags{display:none!important}
+#view-callbacks .callback-card[data-p19-callback="1"] h4{padding-right:48px!important;margin:0!important;font-size:10px!important;line-height:1.2!important}
+#view-callbacks .callback-card[data-p19-callback="1"]>p{font-size:7.5px!important;line-height:1.3!important;margin:3px 0 0!important;min-height:20px!important}
+#view-callbacks .callback-card[data-p19-callback="1"] .p18-callback-score{right:9px!important;top:9px!important;display:block!important}.callback-card[data-p19-callback="1"] .p18-callback-score>strong{width:29px!important;height:29px!important;font-size:8px!important}.callback-card[data-p19-callback="1"] .p18-callback-score .p18-heat{display:none!important}
+.p19-callback-meta{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px;margin-top:6px}.p19-callback-meta div{border:1px solid #e7ecf2;background:#f8fafc;border-radius:7px;padding:5px;min-width:0}.p19-callback-meta label{display:block;font-size:6px;color:#8b97a8;text-transform:uppercase;letter-spacing:.05em;margin-bottom:2px}.p19-callback-meta span{display:block;font-size:7.5px;color:#26354b;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#view-callbacks .callback-card[data-p19-callback="1"] .p15-callback-actions{margin-top:6px!important;padding-top:6px!important}.callback-card[data-p19-callback="1"] .p15-callback-actions button{width:29px!important;height:28px!important}.callback-card[data-p19-callback="1"] .p15-callback-actions .p15-done{width:auto!important}
+
+@media(max-width:1200px){.p19-nurture-customers{grid-template-columns:repeat(2,minmax(220px,1fr))}}
+@media(max-width:760px){.p19-nurture-customers{grid-template-columns:1fr}.p19-auth-card .p19-auth-logo{width:132px!important}.sidebar .brand.p19-sidebar-brand .p19-kenji-logo{width:94px!important}}

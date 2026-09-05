@@ -12,8 +12,6 @@
 
   function setText(el,value){if(el&&el.textContent!==value)el.textContent=value;}
   function brand(){
-    const strong=$(".brand strong"),sub=$(".brand span"),mark=$(".brand-mark.small");
-    setText(strong,"KENJI AI");setText(sub,"AI THAT CLOSES DEALS");setText(mark,"K");
     if(!$(".kenji-advantage")&&$(".sidebar nav")){
       const box=document.createElement("div");box.className="kenji-advantage";box.innerHTML='<b>✦ Kenji AI Advantage</b><p>Revenue-generating automation that works 24/7 to follow up, qualify leads, and close more business.</p><a href="https://kenjiai.com/" target="_blank" rel="noreferrer">KenjiAI.com →</a>';
       $(".sidebar nav").insertAdjacentElement("afterend",box);

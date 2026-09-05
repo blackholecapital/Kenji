@@ -26,11 +26,7 @@
     const toolbar=$('#view-leads .toolbar');if(toolbar&&!$('#p12ResetDemo')){const b=document.createElement('button');b.id='p12ResetDemo';b.type='button';b.className='ghost compact text-btn';b.dataset.demoSafe='1';b.textContent='Reset demo data';b.addEventListener('click',async()=>{if(!confirm('Restore all synthetic Kenji demo leads?'))return;await fetch('/api/demo/reset',{method:'POST'});location.reload();});toolbar.appendChild(b);}
   }
 
-  function topBrand(){
-    const actions=$('.top-actions');if(!actions||$('#p12KenjiBrand'))return;
-    const a=document.createElement('a');a.id='p12KenjiBrand';a.className='p12-kenji-brand';a.href='https://kenjiai.com/';a.target='_blank';a.rel='noreferrer';a.title='KenjiAI';a.innerHTML='<span class="p12-brand-icon"><img src="https://kenjiai.com/favicon.ico" alt=""></span><span><b>KENJI AI</b><small>AI That Closes Deals While You Sleep</small></span>';
-    const img=$('img',a);img.addEventListener('error',()=>{img.style.display='none';img.parentElement.textContent='K';});actions.prepend(a);
-  }
+  function retireLegacyTopBrand(){$('#p12KenjiBrand')?.remove();}
 
   function headshotSupport(){
     for(const img of $$('#kenjiSupportPill > img,.kenji-support-head > img')){
@@ -40,7 +36,7 @@
 
   function fixedSupport(){const panel=$('#kenjiSupportPanel');if(panel)panel.classList.add('p12-fixed-support');headshotSupport();}
 
-  function enhance(){applyStageColors();demoDeleteButtons();topBrand();fixedSupport();}
+  function enhance(){applyStageColors();demoDeleteButtons();retireLegacyTopBrand();fixedSupport();}
   function boot(){enhance();const grid=$('#leadGrid');if(grid)new MutationObserver(()=>{applyStageColors(grid);demoDeleteButtons(grid);}).observe(grid,{childList:true,subtree:true});const supportObserver=new MutationObserver(()=>fixedSupport());supportObserver.observe(document.body,{childList:true,subtree:true});document.addEventListener('change',e=>{if(e.target.matches('[data-stage]'))setTimeout(()=>applyStageColors(e.target.closest('.lead-card')),0);});}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
 })();

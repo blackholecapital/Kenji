@@ -27,7 +27,7 @@
   }
   async function json(path){const r=await fetch(path,{headers:{accept:'application/json'}}),d=await r.json().catch(()=>({}));if(!r.ok||d?.ok===false)throw new Error(d?.error||`Request failed (${r.status})`);return d;}
   async function refreshData(force=false){
-    if(loading&&!force)return loading;
+    if(loading)return loading;
     loading=(async()=>{
       const [l,c,b]=await Promise.allSettled([json('/api/leads?limit=250'),json('/api/calls'),json('/api/callbacks')]);
       if(l.status==='fulfilled')leads=l.value.leads||[];
@@ -78,8 +78,14 @@
     for(const card of $$('#callbackList .callback-card')){
       const row=callbackRow(card),lead=row?.lead||leadsById.get(String(row?.leadId||''))||fallbackLeadByName(card.querySelector('h4')?.textContent||'');if(!lead)continue;
       if(lead.stage)card.dataset.stageTone=tone(lead.stage);
-      let wrap=$('.p18-callback-score',card);if(!wrap){wrap=document.createElement('span');wrap.className='p18-callback-score';wrap.innerHTML='<strong></strong><span class="p18-heat"></span>';card.appendChild(wrap);}
-      const strong=$('strong',wrap),score=Number(lead.score||0);if(strong.textContent!==String(score||'—'))strong.textContent=String(score||'—');const h=heat(score),flame=$('.p18-heat',wrap);if(h){if(flame.textContent!==h)flame.textContent=h;flame.style.display='inline-flex';}else flame.style.display='none';
+      let wrap=$('.p18-callback-score',card);
+      if(!wrap){wrap=document.createElement('span');wrap.className='p18-callback-score';wrap.innerHTML='<strong></strong><span class="p18-heat"></span>';card.appendChild(wrap);}
+      const strong=$('strong',wrap),score=Number(lead.score||0);if(strong&&strong.textContent!==String(score||'—'))strong.textContent=String(score||'—');
+      if(card.dataset.p19Callback==='1'){$('.p18-heat',wrap)?.remove();continue;}
+      const h=heat(score);let flame=$('.p18-heat',wrap);
+      if(!flame){flame=document.createElement('span');flame.className='p18-heat';wrap.appendChild(flame);}
+      if(h){if(flame.textContent!==h)flame.textContent=h;if(flame.style.display!=='inline-flex')flame.style.display='inline-flex';}
+      else if(flame.style.display!=='none')flame.style.display='none';
     }
   }
 
@@ -123,14 +129,14 @@
   }
 
   function decorate(){quietHeader();decorateLeadHeat();decorateCallCards();decorateCallbacks();ensureDetailTabs();}
-  function schedule(){if(queued)return;queued=true;requestAnimationFrame(()=>{queued=false;decorate();});}
-  function observe(selector){const el=$(selector);if(el)new MutationObserver(schedule).observe(el,{childList:true,subtree:true,characterData:true});}
+  function schedule(){if(queued)return;queued=true;requestAnimationFrame(()=>{queued=false;try{decorate();}catch(error){console.warn('Pass18 decoration skipped after UI error',error);}});}
+  function observe(selector){const el=$(selector);if(el)new MutationObserver(schedule).observe(el,{childList:true,subtree:true});}
 
   function boot(){
     quietHeader();refreshData().finally(schedule);
-    observe('#leadGrid');observe('#callbackList');observe('#callsTable');observe('.top-actions');
+    observe('#leadGrid');observe('#callbackList');observe('#callsTable');
     document.addEventListener('click',e=>{const view=e.target.closest('[data-view]')?.dataset.view;if(!view)return;if(['leads','calls','callbacks'].includes(view)){setTimeout(()=>refreshData(true).finally(schedule),80);}else setTimeout(schedule,40);});
-    setInterval(()=>{if(document.hidden)return;const callsView=$('#view-calls')?.classList.contains('active'),cbView=$('#view-callbacks')?.classList.contains('active');if(callsView||cbView)refreshData(true).finally(schedule);},30000);
+    setInterval(()=>{if(document.hidden||$('#app')?.classList.contains('hidden'))return;const callsView=$('#view-calls')?.classList.contains('active'),cbView=$('#view-callbacks')?.classList.contains('active');if(callsView||cbView)refreshData(true).finally(schedule);},30000);
   }
 
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();

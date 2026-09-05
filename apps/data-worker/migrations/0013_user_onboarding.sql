@@ -2,6 +2,7 @@
 PRAGMA foreign_keys = ON;
 
 ALTER TABLE owner_users ADD COLUMN role TEXT NOT NULL DEFAULT 'operator';
+ALTER TABLE owner_users ADD COLUMN pass_iterations INTEGER NOT NULL DEFAULT 180000;
 
 CREATE TABLE IF NOT EXISTS owner_auth_settings (
   id TEXT PRIMARY KEY,
